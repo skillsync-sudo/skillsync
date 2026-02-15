@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skillsync | Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-orange:  #7b8aba; /* Your Agbalumo Orange */
+      --primary-blue: #0a66c2;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --white: #ffffff;
+      --text-main: #1e293b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    main {
+      max-width: 450px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .logo {
+      font-family: 'Agbalumo', system-ui;
+      color: var(--primary-orange);
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--primary-blue);
+    }
+
+    input[type="email"], textarea {
+      width: 100%;
+      box-sizing: border-box; /* Fixes width issue */
+      padding: 14px;
+      font-size: 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-orange);
+    }
+
+    button {
+      width: 100%;
+      background-color: var(--primary-blue);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-orange);
+      transform: translateY(-2px);
+    }
+
+    .privacy-note {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 15px;
+      line-height: 1.4;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .success-icon {
+      font-size: 50px;
+      color: #22c55e;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<main>
+    <div class="logo">Skill<span>sync</span></div>
+    <h1>Share your thoughts</h1>
+
+    <form id="feedback-form" novalidate>
+      <label for="email">Email Address (Optional)</label>
+      <input id="email" type="email" placeholder="name@example.com" />
+
+      <label for="message">How can we improve?</label>
+      <textarea id="message" placeholder="Tell us about your experience..." required></textarea>
+
+      <button type="submit">Submit Feedback</button>
+      
+      <p class="privacy-note">
+        In compliance with Nepal's Individual Privacy Act 2075, your data is secure and will only be used to improve Skillsync services.
+      </p>
+    </form>
+
+    <div id="success-message" class="success-message" style="display:none;">
+      <div class="success-icon">✓</div>
+      <h2 style="color: var(--primary-blue); margin-bottom: 10px;">Dhanyabaad!</h2>
+      <p style="color: #64748b;">Your feedback helps us build a better platform for Nepal.</p>
+    </div>
+</main>
+
+<script>
+  const form = document.getElementById('feedback-form');
+  const successMessage = document.getElementById('success-message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const message = document.getElementById('message').value.trim();
+
+    if (!message) {
+      alert('Please enter your feedback.');
+      return;
+    }
+
+    // Simulation of success
+    form.style.display = 'none';
+    successMessage.style.display = 'block';
+    
+    // You can use fetch() here to send data to your backend
+    console.log("Feedback Submitted:", message);
+  });
+</script>
+
+</body>
+</html>

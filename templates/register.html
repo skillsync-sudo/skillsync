@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Join Skillsync</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body { background: #fff; }
+    .logo { font-weight: 700; font-size: 28px; color: #0a66c2; user-select: none; }
+    .btn-primary { background-color: #0a66c2; border-color: #0a66c2; }
+    .btn-primary:hover { background-color: #004182; }
+    .card { background-color: #B8C7D3; border: none; }
+    /* Smooth transition for the company field */
+    #company-field { transition: all 0.3s ease-in-out; }
+  </style>
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow">
+          <div class="card-body text-center px-4">
+            
+            <div class="logo mb-4">Skillsync</div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <h1 class="h4 mb-4">Join Skillsync</h1>
+
+            <form id="register-form" method="POST" action="/register">
+              <div class="row g-2 mb-3">
+                <div class="col text-start">
+                  <label class="form-label fw-bold small">First name</label>
+                  <input type="text" class="form-control" name="firstName" required />
+                </div>
+                <div class="col text-start">
+                  <label class="form-label fw-bold small">Last name</label>
+                  <input type="text" class="form-control" name="lastName" required />
+                </div>
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">Email</label>
+                <input type="email" class="form-control" name="email" required />
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">Password (6+ chars)</label>
+                <input type="password" class="form-control" name="password" minlength="6" required />
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">I am a:</label>
+                <div class="d-flex gap-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="role" id="role-student" value="student" checked>
+                      <label class="form-check-label" for="role-student">Student</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="role" id="role-recruiter" value="recruiter">
+                      <label class="form-check-label" for="role-recruiter">Recruiter</label>
+                    </div>
+                </div>
+              </div>
+
+              <div id="company-field" class="mb-3 text-start" style="display: none;">
+                <label for="companyName" class="form-label fw-bold small">Company Name</label>
+                <input type="text" class="form-control" name="companyName" id="companyInput" placeholder="Enter your company">
+              </div>
+
+              <p class="text-muted small mb-3">
+                By clicking Agree & Join, you agree to the Skillsync 
+                <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>.
+              </p>
+
+              <button type="submit" class="btn btn-primary w-100">Agree & Join</button>
+            </form>
+
+            <div class="mt-3">
+              <a href="{{ url_for('login') }}" class="text-decoration-none">Already on Skillsync? Log in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const studentRadio = document.getElementById('role-student');
+    const recruiterRadio = document.getElementById('role-recruiter');
+    const companyField = document.getElementById('company-field');
+    const companyInput = document.getElementById('companyInput');
+
+    // Function to handle visibility
+    function toggleCompanyField() {
+      if (recruiterRadio.checked) {
+        companyField.style.display = 'block';
+        companyInput.setAttribute('required', 'true');
+      } else {
+        companyField.style.display = 'none';
+        companyInput.removeAttribute('required');
+        companyInput.value = ''; // Clear the input if they switch back to student
+      }
+    }
+
+    // Listen for changes on radio buttons
+    studentRadio.addEventListener('change', toggleCompanyField);
+    recruiterRadio.addEventListener('change', toggleCompanyField);
+  </script>
+</body>
+</html>

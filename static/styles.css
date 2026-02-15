@@ -1,0 +1,189 @@
+/* SkillSync - Brand Palette */
+:root {
+    --primary-color: #4a90d9;
+    --primary-dark: #3a7bc8;
+    --primary-light: #a8c8e8;
+    --background: #f8fafc;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #000000;
+    --white: #ffffff;
+}
+
+/* --- 1. BASE STYLES --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* --- 2. HEADER & NAVIGATION --- */
+header.sticky-top {
+    /* Matches the original logo's background color */
+    background-color: rgb(209,219,228) !important; 
+    height: fit-content;
+    height: 122px;
+
+}
+
+.logo{
+    font-family: 'Agbalumo', system-ui;
+  color: #7b8aba; /* A nice Agbalumo orange color */
+  font-size: 3rem;
+}
+    
+
+.navbar-brand:hover img {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--text-muted) !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.nav-link i {
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+    transform: translateY(-2px);
+}
+
+/* --- 3. HERO SECTION --- */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at top right, var(--primary-light), transparent 40%);
+}
+
+.hero-card {
+    background: var(--white);
+    border-radius: 2rem;
+    transition: transform 0.5s ease;
+}
+
+/* Matching the "Logo Blue" for the main Welcome text */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+/* Decorative Background Blobs for Hero Visual */
+.hero-bg-gradient, .hero-bg-gradient-2 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+}
+
+.hero-bg-gradient {
+    background: var(--primary-light);
+    top: 10%;
+    right: 10%;
+}
+
+.hero-bg-gradient-2 {
+    background: #e0f2fe;
+    bottom: 20%;
+    right: 5%;
+}
+
+/* --- 4. BUTTONS --- */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--background);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* --- 5. FOOTER & SOCIALS --- */
+footer {
+    background-color: #a2a2fc !important; /* Your specific color from HTML */
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    transform: translateY(-5px);
+}
+
+/* --- 6. ANIMATIONS --- */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.bounce {
+    animation: bounce 3s infinite ease-in-out;
+}
+
+.fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 7. MOBILE RESPONSIVE (Phone Fix) --- */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 100px !important;
+        text-align: center;
+    }
+
+    .navbar-collapse {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+    }
+
+    /* Full-width buttons on mobile for easier tapping */
+    .d-flex.flex-column.flex-sm-row .btn {
+        width: 100%;
+    }
+}

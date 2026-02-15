@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skill Sync</title>
+  <style>
+    .header{
+        width:100%;
+        height:80px;
+        background-color:#B8C7D3;
+    }
+    /* Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    a {
+      color: #0a66c2;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    /* Container centering */
+    main {
+      width: 360px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      padding: 32px 24px 40px;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    /* Logo */
+    header {
+      width: 100%;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 28px;
+      color: #0a66c2;
+      display: inline-flex;
+      align-items: center;
+      user-select: none;
+    }
+    .logo span {
+      font-weight: 400;
+      background-color: #0a66c2;
+      color: #fff;
+      padding: 4px 8px 3px;
+      border-radius: 2px;
+      margin-left: 4px;
+      font-size: 18px;
+      line-height: 1;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Buttons */
+    button.social-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 24px;
+      padding: 10px 0;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #666;
+      background: #fff;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+    button.social-btn:hover,
+    button.social-btn:focus {
+      background-color: #f2f2f2;
+      outline: none;
+    }
+    button.google {
+      color: #000;
+    }
+    button.apple {
+      color: #000;
+    }
+
+    /* Social icons */
+    svg.icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* Sign in text */
+    h1 {
+      margin: 0 0 16px;
+      font-weight: 600;
+      font-size: 22px;
+    }
+
+    /* Agreement text */
+    .agreement {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 16px;
+      line-height: 1.4;
+      user-select: none;
+    }
+
+    /* Horizontal separator with OR */
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #777;
+      font-size: 12px;
+      user-select: none;
+    }
+    .separator hr {
+      flex-grow: 1;
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 0;
+    }
+
+    /* Form inputs */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      padding: 12px 12px 12px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline-offset: 2px;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #0a66c2;
+      outline: 2px solid #c6dafc;
+    }
+
+    /* Show password toggle */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .show-password-btn {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #0a66c2;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      padding: 0;
+    }
+    .show-password-btn:focus {
+      outline: 2px solid #c6dafc;
+      outline-offset: 2px;
+    }
+
+    /* Forgot password link */
+    .forgot-password {
+      font-size: 12px;
+      margin-top: -8px;
+      margin-bottom: 8px;
+      text-align: right;
+    }
+
+    /* Checkbox */
+    label.keep-logged-in {
+      font-size: 12px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    label.keep-logged-in input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Sign in button */
+    button.signin-btn {
+      background: #0a66c2;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 0;
+      border: none;
+      border-radius: 24px;
+      margin-top: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    button.signin-btn:hover,
+    button.signin-btn:focus {
+      background: #004182;
+      outline: none;
+    }
+
+    /* Bottom join text */
+    .bottom-join {
+      margin-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      user-select: none;
+    }
+    .bottom-join a {
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 560px;
+      font-size: 12px;
+      color: #666;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 16px;
+      user-select: none;
+    }
+    footer a {
+      color: #0a66c2;
+    }
+    footer select {
+      border: none;
+      background: transparent;
+      color: #666;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <img src="{{ url_for('static', filename='logo1.png') }}" alt="Logo" width="100">
+  </div>
+</header>
+</header>
+
+<main role="main" aria-labelledby="signin-title">
+  <h1 id="signin-title">Sign in</h1>
+
+  <button class="social-btn google" type="button" aria-label="Continue with Google">
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3" aria-hidden="true" focusable="false">
+      <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.3-4.4-50.7H272v95.9h146.9c-6.4 34.5-25.7 63.8-54.9 83.6v69h88.7c52.1-47.9 82-118.7 82-197.8z"/>
+      <path fill="#34A853" d="M272 544.3c73.6 0 135.4-24.3 180.6-65.8l-88.7-69c-24.6 16.4-56.1 26-91.9 26-70.7 0-130.5-47.7-152-111.2h-89.3v69.9c45.6 90.3 139.9 150.1 241.3 150.1z"/>
+      <path fill="#FBBC04" d="M120 322.3A161.1 161.1 0 01113.6 272c0-16.2 2.9-31.8 7.9-46.3v-69.9h-89.3A267.1 267.1 0 0029.4 272a268.4 268.4 0 0090.6 150.4l79.5-62.4a160.1 160.1 0 01-89.5-38.4z"/>
+      <path fill="#EA4335" d="M272 107.7c38.8 0 73.7 13.3 101.3 39.5l76-75.9C392 24.6 329.3 0 272 0 169 0 74.7 59.7 29.4 150.1l89.4 69.9c21.5-63.5 81.3-111.2 153.2-111.2z"/>
+    </svg>
+    Continue with Google
+  </button>
+  <p class="agreement" aria-live="polite">
+    By clicking Continue, you agree to SKILLsync's
+    <a href="{{ url_for('user_agreement')}}">User Agreement</a>
+  <a href="{{ url_for('privacy_policy') }}" >Privacy Policy</a>
+  <a href="{{ url_for('community') }}" tabindex="0">Community Guidelines</a>
+  <a href="{{ url_for('cookie_policy') }}">Cookie Policy</a>
+  <a href="{{ url_for('copyright') }}">Copyright Policy</a>
+  </p>
+
+  <div class="separator" aria-hidden="true">
+    <hr /><span>or</span><hr />
+  </div>
+
+
+
+<form method="POST" action="{{ url_for('login') }}">
+
+    <label for="email-phone" class="visually-hidden">Email or phone</label>
+    <input id="email-phone" name="email" type="text" placeholder="Email or phone" autocomplete="username" required />
+
+    <div class="password-wrapper">
+      <label for="password" class="visually-hidden">Password</label>
+      <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="button" class="show-password-btn" aria-label="Show password">Show</button>
+    </div>
+
+    <div class="forgot-password">
+      <a href="{{ url_for('forget') }}" tabindex="0">Forgot password?</a>
+    </div>
+
+    <label class="keep-logged-in" for="keep-logged-in">
+      <input id="keep-logged-in" type="checkbox" checked />
+      Keep me logged in
+    </label>
+
+    <button type="submit" class="signin-btn">Sign in</button>
+  </form>
+
+  <p class="bottom-join" aria-live="polite">
+    New to SKILLsync? <a href="{{ url_for('register') }}">Join now</a>
+  </p>
+</main>
+
+<footer role="contentinfo" aria-label="Footer">
+  <a href="{{ url_for('user_agreement')}}">User Agreement</a>
+  <a href="{{ url_for('privacy_policy') }}" >Privacy Policy</a>
+  <a href="{{ url_for('community') }}" tabindex="0">Community Guidelines</a>
+  <a href="{{ url_for('cookie_policy') }}">Cookie Policy</a>
+  <a href="{{ url_for('copyright') }}">Copyright Policy</a>
+  <a href="{{ url_for('feedback') }}">Send Feedback</a>
+  <div>
+    <label for="language-select" class="visually-hidden">Language</label>
+    <select id="language-select" aria-label="Language selection">
+      <option value="en" selected>English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <!-- Add more languages -->
+    </select>
+  </div>
+  <div style="width: 100%; text-align:center; margin-top: 10px; font-size: 12px; color:#666;">
+    SKILLsync © 2025
+  </div>
+</footer>
+
+<script>
+  // Password show/hide functionality
+  const showPassBtn = document.querySelector('.show-password-btn');
+  const passwordInput = document.getElementById('password');
+
+  showPassBtn.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      showPassBtn.textContent = 'Hide';
+    } else {
+      passwordInput.type = 'password';
+      showPassBtn.textContent = 'Show';
+    }
+  });
+</script>
+
+<!-- Visually hidden helper class for screen reader only text -->
+<style>
+  .visually-hidden {
+    position: absolute !important;
+    height: 1px; 
+    width: 1px; 
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+  }
+</style>
+
+</body>
+</html>

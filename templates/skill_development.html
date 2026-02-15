@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync | Skill Development</title>
+    <style>
+        :root {
+            --primary: #4F46E5; 
+            --primary-hover: #4338ca; 
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF; 
+            --text-main: #111827; 
+            --text-muted: #6B7280;
+            --border: #E5E7EB; 
+            --radius: 12px; 
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            --font: 'Inter', system-ui, sans-serif;
+        }
+
+        /* Base Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: var(--font); 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            line-height: 1.5; 
+            padding-top: 80px; 
+        }
+
+        /* Layout Grid - Fixed Alignment */
+        .layout { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: 280px 1fr 300px; 
+            gap: 24px; 
+            padding: 0 16px;
+            align-items: start;
+        } 
+
+        /* Header & Navigation */
+        header { 
+            position: fixed; 
+            top: 0; left: 0; right: 0; 
+            height: 64px; 
+            background: white; 
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 24px; 
+        }
+
+        .logo { font-weight: 800; font-size: 20px; color: var(--primary); }
+
+        /* Utility Icons */
+        .icon-btn {
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+        .icon-btn:hover {
+            background-color: #f3f6f8;
+            transform: translateY(-1px);
+        }
+
+        /* Cards & Buttons */
+        .card { 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow-sm); 
+            margin-bottom: 20px; 
+            padding: 16px; 
+        }
+
+        /* Sidebars */
+        .left-sidebar, .right-sidebar {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        /* Video Grid Styling */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .video-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .skill-tag {
+            background: #EEF2FF;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        /* Avatar */
+        .avatar-sm { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            background: #E0E7FF; 
+            color: var(--primary); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 24px;
+            overflow: hidden;
+            margin: 0 auto 15px;
+        }
+        .avatar-sm img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">SkillSync</div>
+
+    <div class="search-container" style="flex-grow: 1; max-width: 400px; margin: 0 20px;">
+        <div style="display: flex; align-items: center; background: #f3f6f8; border-radius: 8px; padding: 5px 15px;">
+            <span style="color: #666; margin-right: 8px;">🔍</span>
+            <input type="text" placeholder="Search internships..." style="border: none; background: transparent; padding: 8px; width: 100%; outline: none;">
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="{{ url_for('student_feed') }}" class="icon-btn" title="Back to Feed">
+            📘
+        </a>
+
+        <div class="icon-btn" onclick="toggleNotifDropdown(event)" style="position: relative;">
+            🔔
+            {% if unread_count|default(0) > 0 %}
+                <span id="notif-badge" style="position: absolute; top: -2px; right: -2px; background: #ef4444; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold; border: 2px solid white;">
+                    {{ unread_count }}
+                </span>
+            {% endif %}
+
+            <div id="notifDropdown" style="display: none; position: absolute; top: 50px; right: 0; width: 300px; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-md); z-index: 9999; text-align: left;">
+                <div style="padding: 12px; font-weight: bold; border-bottom: 1px solid #eee;">Notifications</div>
+                <div style="max-height: 350px; overflow-y: auto;">
+                    {% for n in notifications %}
+                        <div style="padding: 12px; border-bottom: 1px solid #f9f9f9; font-size: 13px; {% if not n.is_read %}background: #f0f7ff;{% endif %}">
+                            <strong>{{ n.sender_name }}</strong> {{ n.message }}
+                            <div style="font-size: 11px; color: #999; margin-top: 4px;">{{ n.date_created.strftime('%H:%M') }}</div>
+                        </div>
+                    {% else %}
+                        <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 13px;">No new alerts</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="layout">
+    <aside class="left-sidebar">
+        <div class="card" style="text-align: center;">
+            <div class="avatar-sm">
+                {% if user.profile_pic %}
+                    <img src="{{ url_for('static', filename='uploads/' + user.profile_pic) }}">
+                {% else %}
+                    {{ user.name[0] }}
+                {% endif %}
+            </div>
+            <h3>{{ user.name }}</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">AI Analysis: <b>Active</b></p>
+        </div>
+    </aside>
+
+    <section class="feed">
+        <div class="card">
+            <h2 style="margin-bottom: 5px;">🎯 Your AI Learning Path</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+                We analyzed your profile and current internship postings to find these skill gaps.
+            </p>
+
+            <div class="video-grid">
+                {% for res in resources %}
+                <div class="video-card">
+                    <a href="{{ res.link }}" target="_blank" style="text-decoration: none; color: inherit;">
+                        <img src="{{ res.thumbnail }}" class="video-thumb">
+                        <div style="padding: 15px;">
+                            <span class="skill-tag">{{ res.category }}</span>
+                            <h4 style="margin-top: 10px; font-size: 16px;">{{ res.title }}</h4>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
+                                Added on: {{ res.date_added.strftime('%Y-%m-%d') }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                {% else %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                    <p>No gaps found! You are matching all current internships.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <aside class="right-sidebar">
+        <div class="card">
+            <h4>Skill Analysis</h4>
+            <div style="margin-top: 15px; font-size: 13px;">
+                <p><b>Top Required:</b>Python, React</p>
+                <p style="margin-top: 8px;"><b>In Your Profile:</b> {{ user.skills if user.skills else "None" }}</p>
+            </div>
+        </div>
+    </aside>
+</main>
+
+<script>
+    function toggleNotifDropdown(event) {
+        event.stopPropagation();
+        const dd = document.getElementById('notifDropdown');
+        const isVisible = dd.style.display === 'block';
+        
+        // Close other things if needed
+        dd.style.display = isVisible ? 'none' : 'block';
+
+        if (!isVisible) {
+            fetch('/clear-notifications', { method: 'POST' })
+                .then(() => {
+                    const badge = document.getElementById('notif-badge');
+                    if (badge) badge.remove();
+                });
+        }
+    }
+
+    // Close dropdown when clicking anywhere else
+    window.onclick = function() {
+        const dd = document.getElementById('notifDropdown');
+        if (dd) dd.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

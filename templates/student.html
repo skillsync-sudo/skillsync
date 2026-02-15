@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync Pro</title>
+    <style>
+    :root {
+    --primary: #4F46E5; 
+    --primary-hover: #4338ca; 
+    --bg-body: #F3F4F6;
+    --bg-card: #FFFFFF; 
+    --text-main: #111827; 
+    --text-muted: #6B7280;
+    --border: #E5E7EB; 
+    --radius: 12px; 
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+    --font: 'Inter', system-ui, sans-serif;
+}
+
+/* Base Styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+    font-family: var(--font); 
+    background-color: var(--bg-body); 
+    color: var(--text-main); 
+    line-height: 1.5; 
+    padding-top: 80px; 
+}
+
+/* Layout Grid */
+ .layout { 
+                 max-width: 1200px; 
+                  margin: 0 auto; 
+                  display: grid; 
+                  grid-template-columns: 280px 1fr 300px; 
+                  gap: 24px; 
+                  padding: 0 16px;
+                  align-items: start; /* CRITICAL: Allows children to stick independently */
+                } 
+
+/* Header & Navigation */
+header { 
+    position: fixed; 
+    top: 0; left: 0; right: 0; 
+    height: 64px; 
+    background: white; 
+    border-bottom: 1px solid var(--border); 
+    z-index: 1000; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 24px; 
+}
+
+.logo { font-weight: 800; font-size: 20px; color: var(--primary); }
+
+/* Utility Icons (Notifications/Skills) */
+.icon-btn {
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.icon-btn:hover {
+    background-color: #f3f6f8;
+    transform: translateY(-1px);
+}
+
+/* Cards & Buttons */
+.card { 
+    background: var(--bg-card); 
+    border-radius: var(--radius); 
+    border: 1px solid var(--border); 
+    box-shadow: var(--shadow-sm); 
+    margin-bottom: 20px; 
+    padding: 16px; 
+}
+
+.btn { 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    border: none; 
+    transition: 0.2s; 
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+
+/* Avatars */
+.avatar-sm { 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    background: #E0E7FF; 
+    color: var(--primary); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: bold; 
+    overflow: hidden;
+}
+.avatar-sm img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Dropdown */
+.dropdown-item {
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+.dropdown-item:hover {
+    background-color: #f3f6f8;
+    color: var(--primary);
+}
+
+/* Post Styling */
+.post-header { display: flex; gap: 12px; margin-bottom: 12px; }
+.post-actions { 
+    display: flex; 
+    gap: 15px; 
+    border-top: 1px solid var(--border); 
+    padding-top: 10px; 
+    margin-top: 12px; 
+}
+.action-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-muted); 
+    cursor: pointer; 
+    font-size: 14px; 
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.action-btn:hover { color: var(--primary); }
+
+/* Comments */
+.comments-section { 
+    background: #F9FAFB; 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-top: 10px; 
+    display: none; 
+}
+.comment-input-row { display: flex; gap: 8px; margin-top: 10px; }
+.comment-input { 
+    flex: 1; 
+    padding: 8px 12px; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    outline: none;
+}
+
+/* Modals */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-card {
+    background: white;
+    width: 95%;
+    max-width: 450px;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) { 
+    .layout { grid-template-columns: 1fr; } 
+    .left-sidebar, .right-sidebar { display: none; } 
+}   
+ .left-sidebar, .right-sidebar {
+                                         position: sticky;
+                                         top: 84px; /* header height (64px) + 20px gap */
+                                         height: fit-content;
+        }
+        .skill-badge {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e0e0e0 !important;
+    font-weight: 500;
+}
+
+.skill-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-color: #4e73df !important;
+    background-color: #f8f9fc !important;
+}
+
+.market-trend-card {
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.trend-rank {
+    font-size: 0.7rem;
+    background: #4e73df;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+</style>
+</head>
+<body>
+
+<body>
+
+<header>
+    <div class="logo">SkillSync</div>
+
+    <div class="search-container" style="flex-grow: 1; max-width: 400px; margin: 0 20px; position: relative;">
+        <div style="display: flex; align-items: center; background: #f3f6f8; border-radius: 8px; padding: 5px 15px;">
+            <span style="color: #666;">🔍</span>
+            <input type="text" id="live-search" name="query" placeholder="Search internships or people..." 
+                   style="border: none; background: transparent; padding: 8px; width: 100%; outline: none;" autocomplete="off">
+            
+            <select id="search-type" name="type" style="border: none; background: transparent; color: #666; font-size: 12px; cursor: pointer;">
+                <option value="all">All</option>
+                <option value="internships">Internships</option>
+                <option value="people">People</option>
+            </select>
+        </div>
+        <div id="search-results-popup" style="display:none; position:absolute; width:100%; background:white; border:1px solid #ddd; border-radius:8px; z-index:1000; box-shadow:0 8px 24px rgba(0,0,0,0.1); margin-top: 5px; overflow: hidden;"></div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-right: 15px;">
+       <a href="{{ url_for('student_feed') if is_skill_page else url_for('skill_development') }}" class="icon-btn" title="Home/Skills" style="text-decoration: none;">
+    📘
+        </a>
+        <div class="icon-btn" onclick="toggleNotifDropdown(event)" style="position: relative; cursor: pointer;">
+    🔔
+    {% if unread_count > 0 %}
+        <span id="notif-badge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; font-weight: bold; border: 2px solid white;">
+            {{ unread_count }}
+        </span>
+    {% endif %}
+
+    <div id="notifDropdown" style="display: none; position: absolute; top: 45px; right: 0; width: 300px; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-md); z-index: 9999; text-align: left;">
+        <div style="padding: 12px; font-weight: bold; border-bottom: 1px solid #eee;">Notifications</div>
+        <div style="max-height: 350px; overflow-y: auto;">
+            {% for n in notifications %}
+                <div style="padding: 12px; border-bottom: 1px solid #f9f9f9; font-size: 13px; {% if not n.is_read %}background: #f0f7ff;{% endif %}">
+                    <strong>{{ n.sender_name }}</strong> {{ n.message }}
+                    <div style="font-size: 11px; color: #999; margin-top: 4px;">{{ n.date_created.strftime('%H:%M') }}</div>
+                </div>
+            {% else %}
+                <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 13px;">No new alerts</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    </div>
+
+    <div class="profile-container" style="position: relative;">
+        <div id="profileTrigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <img src="{% if user.profile_pic %}{{ url_for('static', filename='uploads/' + user.profile_pic) }}{% else %}https://ui-avatars.com/api/?name={{ user_name }}{% endif %}" 
+                 alt="Profile" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+            <span>{{ user_name }}</span>
+        </div>
+
+        <div id="profileDropdown" style="display:none; position:absolute; right:0; top:48px; background:white; box-shadow:0 8px 24px rgba(0,0,0,0.15); border-radius:10px; width:220px; z-index:99; padding:10px; border: 1px solid #eee;">
+            <div style="padding:10px; border-bottom: 1px solid #eee; margin-bottom: 5px;">
+                <small style="color: #666; display: block;">Signed in as</small>
+                <strong>{{ user_name }}</strong>
+            </div>
+            <div class="dropdown-item" style="padding:8px 6px; border-radius:8px; cursor:pointer;" id="viewProfileBtn">👤 View Profile</div>
+            <div class="dropdown-item" id="editProfileBtn" style="padding:8px 6px; border-radius:8px; cursor:pointer;">⚙️ Edit Profile</div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 8px 0;">
+            <div style="padding: 5px;">
+                <a href="{{ url_for('logout') }}" style="display: block; width: 100%; padding: 8px; border-radius: 8px; color: #dc3545; text-align: center; border: 1px solid #dc3545; text-decoration: none; font-weight: bold;">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="layout">
+        <aside class="left-sidebar">
+    <div class="card" style="text-align: center;">
+        <div class="avatar-sm" style="width: 80px; height: 80px; margin: 0 auto 15px; font-size: 32px;">
+            {% if user.profile_pic %}
+                <img src="{{ url_for('static', filename='uploads/' + user.profile_pic) }}">
+            {% else %}
+                {{ user_name[0] }}
+            {% endif %}
+        </div>
+        <h3 style="margin-bottom: 2px;">{{ user_name }}</h3>
+        
+        {% if user.bio %}
+            <p style="font-size: 13px; color: var(--text-main); margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 10px;">{{ user.bio }}</p>
+        {% endif %}
+
+        <div style="text-align: left; font-size: 13px; color: var(--text-muted);">
+            {% if user.phone %} <p>📞 {{ user.phone }}</p> {% endif %}
+            {% if user.whatsapp_link %} 
+                <p><a href="{{ user.whatsapp_link }}" target="_blank" style="text-decoration:none; color: #25D366;">💬 WhatsApp</a></p> 
+            {% endif %}
+        </div>
+
+        {% if user.resume_link %}
+            <a href="{{ user.resume_link }}" target="_blank" class="btn btn-primary" style="display: block; margin-top: 15px; font-size: 12px; text-decoration: none;">📄 View Resume</a>
+        {% endif %}
+        <div class="card" style="text-align: center;">
+        <p style="color: var(--primary); font-size: 13px; font-weight: 600;">{{ user_role|capitalize }}</p>
+        
+        {% if user.education %}
+            <p style="font-size: 12px; color: var(--text-muted);">🎓 {{ user.education }}</p>
+        {% endif %}
+
+        {% if user.bio %}
+            <p style="font-size: 13px; margin: 10px 0; border-top: 1px solid #eee; padding-top: 10px;"><b>Bio:</b>{{ user.bio }}</p>
+        {% endif %}
+
+        {% if user.skills %}
+        <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px;">
+            {% for skill in user.skills.split(',') %}
+                <span style="background: #E0E7FF; color: #4F46E5; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">
+                   ⭐ {{ skill.strip() }}
+                </span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        </div>
+    </div>
+    </aside>
+<main class="main-content">
+        <div class="card">
+            <form action="{{ url_for('create_post') }}" method="POST">
+                <textarea name="content" placeholder="Post a new internship or update..." style="width: 100%; border: none; outline: none; font-size: 16px; resize: none; min-height: 80px;" required></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px;">
+                  {% if session['role'] == 'recruiter' %}
+                    <label style="font-size: 13px; color: var(--text-muted);">
+                        <input type="checkbox" name="can_apply"> Enable Internship Apply Button
+                    </label>
+                {% else %}
+                    <div></div>
+                {% endif %}
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="posts-feed">
+            {% for post in posts %}
+            <div class="card">
+                <div class="post-header">
+                    <div class="avatar-sm" onclick="openProfileDetail('{{ post.author_id }}', '{{ post.author_role }}')" style="cursor:pointer;">
+                        {% set author = Student.query.get(post.author_id) if post.author_role == 'student' else Recruiter.query.get(post.author_id) %}
+                        {% if author and author.profile_pic %}<img src="{{ url_for('static', filename='uploads/' + author.profile_pic) }}">{% else %}{{ post.author_name[0] }}{% endif %}
+                    </div>
+                    <div>
+                        <strong onclick="openProfileDetail('{{ post.author_id }}', '{{ post.author_role }}')" style="cursor:pointer;">{{ post.author_name }}</strong>
+                        <div style="font-size: 12px; color: var(--text-muted);">{{ post.author_role|capitalize }} • {{ post.date_posted.strftime('%H:%M') }}</div>
+                    </div>
+                </div>
+
+                <div class="post-content">{{ post.content }}</div>
+
+                <div class="post-actions">
+                    <a href="{{ url_for('like_post', post_id=post.id) }}" class="action-btn">❤️ {{ post.likes_count }}</a>
+                    <button class="action-btn" onclick="toggleComments({{ post.id }})">💬 Comment</button>
+                    {% if session['user_id'] == post.author_id and session['role'] == post.author_role %}
+                    <div style="margin-left: auto; display: flex; gap: 12px;">
+                        <button onclick="editPost({{ post.id }}, '{{ post.content }}')" class="action-btn" style="color: var(--primary);">✏️ Edit</button>
+                        <a href="{{ url_for('delete_post', post_id=post.id) }}" class="action-btn" style="color: #dc3545;" onclick="return confirm('Delete post?')">🗑️ Delete</a>
+                    </div>
+                    {% endif %}
+                    {% if post.can_apply %}
+                    <a href="{{ url_for('apply_internship', post_id=post.id) }}" class="btn btn-primary">
+                    Apply Now
+                </a>
+{% endif %}
+                </div>
+
+                <div id="comments-{{ post.id }}" class="comments-section">
+                    {% for comment in post.comments %}
+                        <div style="font-size: 13px; margin-bottom: 5px;">
+                            <strong>{{ comment.author_name }}:</strong> {{ comment.text }}
+                        </div>
+                    {% endfor %}
+                    <form action="{{ url_for('add_comment', post_id=post.id) }}" method="POST" style="display:flex; gap:5px; margin-top:10px;">
+                        <input type="text" name="comment_text" placeholder="Write a comment..." style="flex:1; padding:5px; border:1px solid #ddd; border-radius:5px;" required>
+                        <button type="submit" class="btn btn-primary" style="padding:2px 10px;">Send</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+    <script>
+// Rename this function to match the button's onclick call
+function openEditPostModal(postId, currentContent) {
+    const newContent = prompt("Edit your post:", currentContent);
+    if (newContent !== null && newContent.trim() !== "") {
+        document.getElementById('edit-input-' + postId).value = newContent;
+        document.getElementById('edit-form-' + postId).submit();
+    }
+}
+</script>
+
+    <aside class="right-sidebar">
+     <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Top Skills in Demand</h5>
+        <p class="text-muted small mb-3">Live analysis from all recruiter posts</p>
+
+        {% if market_trends %}
+            <div class="list-group list-group-flush">
+                {% for skill, count in market_trends %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                        <span class="text-capitalize">
+                            <i class="bi bi-tag-fill small me-2 text-secondary"></i>{{ skill }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-3">
+                <i class="bi bi-clock-history display-6 text-light"></i>
+                <p class="mt-2 text-muted">No active trends found. Check back later!</p>
+            </div>
+        {% endif %}
+
+        <hr>
+        <div class="d-grid">
+            <a href="{{ url_for('refresh_ai') }}" class="btn btn-sm btn-outline-primary w-100 mt-2 rounded-pill" style="font-size: 0.7rem;">
+        Update Trends
+    </a>
+        </div>
+    </div>
+</div>
+    </aside>
+</div>
+
+<script>
+  const profileTrigger = document.getElementById('profileTrigger');
+  const profileDropdown = document.getElementById('profileDropdown');
+
+  // Toggle dropdown when clicking the profile
+  profileTrigger.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevents immediate closing
+    const isVisible = profileDropdown.style.display === 'block';
+    profileDropdown.style.display = isVisible ? 'none' : 'block';
+  });
+
+  // Close dropdown if user clicks anywhere else on the screen
+  document.addEventListener('click', (e) => {
+    if (!profileDropdown.contains(e.target) && e.target !== profileTrigger) {
+      profileDropdown.style.display = 'none';
+    }
+  });
+
+  // Placeholder actions for your profile buttons
+  document.getElementById('viewProfileBtn').onclick = () => {
+      alert("Redirecting to your profile...");
+      // window.location.href = "/profile"; 
+  };
+</script>
+<script>
+  const searchInput = document.getElementById('live-search');
+  const searchType = document.querySelector('select[name="type"]');
+  const resultsPopup = document.getElementById('search-results-popup');
+
+  searchInput.addEventListener('input', async () => {
+    const query = searchInput.value;
+    const type = searchType.value;
+
+    if (query.length < 1) {
+      resultsPopup.style.display = 'none';
+      return;
+    }
+
+    // Call our Python API
+    const response = await fetch(`/api/search?query=${query}&type=${type}`);
+    const data = await response.json();
+
+    let html = '';
+
+    // Render People Results
+    if (data.people.length > 0) {
+      html += '<div style="padding:8px 12px; background:#f8f9fa; font-size:11px; font-weight:bold; color:#888;">PEOPLE</div>';
+     // ... inside your search result listener ...
+data.people.forEach(p => {
+    html += `<div style="padding:10px 15px; cursor:pointer; border-bottom:1px solid #eee;" 
+                  onmouseover="this.style.background='#f3f6f8'" onmouseout="this.style.background='white'"
+                  onclick="openProfileDetail('${p.id}', '${p.role}')">
+              👤 ${p.name} <span style="font-size:11px; color:#0a66c2;">(${p.role})</span>
+            </div>`;
+});
+// ...
+    }
+
+    // Render Internship Results
+    if (data.internships.length > 0) {
+      html += '<div style="padding:8px 12px; background:#f8f9fa; font-size:11px; font-weight:bold; color:#888;">INTERNSHIPS</div>';
+      data.internships.forEach(j => {
+        html += `<div style="padding:10px 15px; cursor:pointer; border-bottom:1px solid #eee;" 
+                      onmouseover="this.style.background='#f3f6f8'" onmouseout="this.style.background='white'"
+                      onclick="window.location.href='/internships'">
+                  💼 ${j.title}
+                </div>`;
+      });
+    }
+
+    if (html === '') {
+      resultsPopup.innerHTML = '<div style="padding:15px; text-align:center; color:#999;">No results found</div>';
+    } else {
+      resultsPopup.innerHTML = html;
+    }
+
+    resultsPopup.style.display = 'block';
+  });
+
+  // Close popup when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!document.querySelector('.search-container').contains(e.target)) {
+      resultsPopup.style.display = 'none';
+    }
+  });
+  function toggleComments(postId) {
+    const section = document.getElementById(`comments-${postId}`);
+    if (section.style.display === 'none' || section.style.display === '') {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
+}
+</script>
+<div id="editProfileModal" class="modal-overlay">
+    <div class="modal-card">
+        <button onclick="closeModal()" style="position:absolute; right:16px; top:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#666;">&times;</button>
+        
+        <h2 style="margin-bottom: 8px;">Edit Profile</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 24px;">Update your professional information.</p>
+        
+        <form action="{{ url_for('edit_profile') }}" method="POST" enctype="multipart/form-data">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="position: relative; display: inline-block;">
+                    <img id="preview-img" src="https://ui-avatars.com/api/?name={{ user_name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary);">
+                    <label for="profile_pic" style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; padding: 4px; border-radius: 50%; cursor: pointer; font-size: 12px;">📸</label>
+                </div>
+                <input type="file" id="profile_pic" name="profile_pic" style="display: none;" accept="image/*" onchange="previewImage(this)">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Full Name</label>
+                <input type="text" name="name" value="{{ user_name }}" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;" required>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">WhatsApp Link</label>
+                <input type="text" id="wa-link" name="whatsapp_link" value="{{ user.whatsapp_link if user else '' }}" 
+                       placeholder="https://wa.me/977..." 
+                       style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+            </div>
+            <div style="margin-bottom: 16px;">
+    <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Bio</label>
+    <textarea name="bio" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; resize:none;" rows="3" placeholder="Tell us about yourself...">{{ user.bio if user.bio }}</textarea>
+</div>
+
+<div style="display: flex; gap: 10px; margin-bottom: 16px;">
+    <div style="flex: 1;">
+        <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Phone Number</label>
+        <input type="text" name="phone" value="{{ user.phone if user.phone }}" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+    </div>
+    <div style="flex: 1;">
+        <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Resume URL</label>
+        <input type="text" name="resume_link" value="{{ user.resume_link if user.resume_link }}" placeholder="Drive or LinkedIn link" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+    </div>
+</div>
+    <div style="margin-bottom: 16px;">
+    <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Education Level</label>
+    <select name="education" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+        <option value="" disabled {{ 'selected' if not user.education }}>Select Education</option>
+        <option value="High School" {{ 'selected' if user.education == 'High School' }}>High School</option>
+        <option value="Bachelor's" {{ 'selected' if user.education == "Bachelor's" }}>Bachelor's</option>
+        <option value="Master's" {{ 'selected' if user.education == "Master's" }}>Master's</option>
+        <option value="PhD" {{ 'selected' if user.education == "PhD" }}>PhD</option>
+    </select>
+</div>
+
+<div style="margin-bottom: 16px;">
+    <label style="display:block; font-weight:600; font-size:14px; margin-bottom:4px;">Skills (Separate with commas)</label>
+    <input type="text" name="skills" value="{{ user.skills if user.skills }}" placeholder="e.g. Python, Design, Marketing" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+</div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; padding: 12px;">Save Profile</button>
+        </form>
+    </div>
+</div>
+<script>
+// Wait for the page to finish loading
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Connect the Edit Profile dropdown button to the modal
+    const editBtn = document.getElementById('editProfileBtn');
+    if (editBtn) {
+        editBtn.onclick = function() {
+            openEditModal();
+        };
+    }
+
+    // Connect form validation
+    const editForm = document.querySelector('form[action*="edit_profile"]');
+    if (editForm) {
+        editForm.onsubmit = function(e) {
+            const waLink = document.getElementById('wa-link').value;
+            // Validating WhatsApp link format
+            if (waLink && !waLink.includes('wa.me/') && !waLink.includes('whatsapp.com/')) {
+                e.preventDefault(); 
+                alert("Invalid Link! Please enter a valid WhatsApp link (e.g., https://wa.me/9800000000)");
+                document.getElementById('wa-link').style.borderColor = "red";
+                return false;
+            }
+        };
+    }
+});
+
+// Modal Control Functions
+function openEditModal() {
+    const modal = document.getElementById('editProfileModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('editProfileModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Image Preview logic
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-img').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+<script>
+async function toggleNotifDropdown(event) {
+    // Prevent the click from bubbling up to the document
+    event.stopPropagation();
+    
+    const dropdown = document.getElementById('notifDropdown');
+    const badge = document.getElementById('notif-badge');
+    
+    // Toggle visibility
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+        
+        // Only call the server if there is an active badge
+        if (badge && badge.style.display !== 'none') {
+            try {
+                await fetch('/clear-notifications');
+                badge.style.display = 'none';
+            } catch (err) {
+                console.log("Notif server error:", err);
+            }
+        }
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+// Close the menu if you click anywhere else on the screen
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('notifDropdown');
+    if (dropdown && dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    }
+});
+async function openProfileDetail(userId, role) {
+    try {
+        const response = await fetch(`/api/user-details/${role}/${userId}`);
+        const data = await response.json();
+        if (data.error) return;
+
+        const stdDiv = document.getElementById('student-content');
+        const recDiv = document.getElementById('recruiter-content');
+        const msgBtn = document.getElementById('msg-btn');
+        
+        document.getElementById('popup-name').innerText = data.name;
+        document.getElementById('popup-role-label').innerText = role;
+
+        if (role === 'student') {
+            stdDiv.style.display = 'block';
+            recDiv.style.display = 'none';
+            document.getElementById('popup-education').innerText = data.education || "Not specified";
+            
+            const skillsList = document.getElementById('popup-skills-list');
+            skillsList.innerHTML = '';
+            (data.skills || "").split(',').forEach(s => {
+                if(s.trim()){
+                    const span = document.createElement('span');
+                    span.style.cssText = "background:#f0f2f5; color:#4F46E5; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;";
+                    span.innerText = s.trim();
+                    skillsList.appendChild(span);
+                }
+            });
+
+            // Student Action: WhatsApp
+            msgBtn.innerText = "💬 WhatsApp Student";
+            msgBtn.style.background = "#25D366";
+            const phone = data.whatsapp || "";
+            msgBtn.href = `https://wa.me/${phone.replace(/\D/g,'')}`;
+        } 
+        else {
+            stdDiv.style.display = 'none';
+            recDiv.style.display = 'block';
+            document.getElementById('popup-company').innerText = data.company_name || "Independent Recruiter";
+            document.getElementById('popup-status').innerText = data.is_verified ? "Verified Partner" : "Standard Recruiter";
+            document.getElementById('popup-position').innerText = data.position;
+
+            
+            // Recruiter Action: Email
+            msgBtn.innerText = "📧 Email Recruiter";
+            msgBtn.style.background = "#4F46E5";
+            msgBtn.href = `mailto:${data.email}`;
+        }
+
+        const avatar = document.getElementById('popup-avatar');
+        avatar.innerHTML = data.profile_pic && data.profile_pic !== 'default.png' 
+            ? `<img src="/static/uploads/${data.profile_pic}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`
+            : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#E0E7FF; border-radius:50%;">${data.name[0]}</div>`;
+
+        document.getElementById('profileDetailModal').style.display = 'flex';
+    } catch (err) { console.error("Error loading profile:", err); }
+}
+
+function closeProfileDetail() {
+    document.getElementById('profileDetailModal').style.display = 'none';
+}
+
+    function closeProfileDetail() {
+    document.getElementById('profileDetailModal').style.display = 'none';
+}
+</script>
+<div id="profileDetailModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card" style="text-align: center; max-width: 400px; padding: 30px;">
+        <button onclick="closeProfileDetail()" style="position:absolute; right:16px; top:16px; background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+        
+        <div id="popup-avatar" class="avatar-sm" style="width: 90px; height: 90px; margin: 0 auto 15px; font-size: 32px; border: 2px solid var(--primary);"></div>
+        <h2 id="popup-name" style="margin-bottom: 5px;"></h2>
+        <p id="popup-role-label" style="color: var(--primary); font-weight: bold; font-size: 11px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;"></p>
+        
+        <div style="text-align: left; border-top: 1px solid #eee; padding-top: 15px;">
+            <div id="student-content" style="display:none;">
+                <p style="margin-bottom: 8px; font-size: 14px;"><strong>🎓 Education:</strong> <span id="popup-education" style="color: var(--text-muted);"></span></p>
+                <div>
+                    <strong style="font-size: 14px;">🛠️ Skills:</strong>
+                    <div id="popup-skills-list" style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;"></div>
+                </div>
+            </div>
+
+            <div id="recruiter-content" style="display:none;">
+                <p style="margin-bottom: 8px; font-size: 14px;"><strong>🏢 Company:</strong> <span id="popup-company" style="color: var(--text-muted);"></span></p>
+                <p style="margin-bottom: 8px; font-size: 14px;"><strong>✅ Status:</strong> <span id="popup-status" style="color: #10b981; font-weight: bold;"></span></p>
+                <p style="margin-bottom: 8px; font-size: 14px;"><strong> Position:</strong> <span id="popup-position" style="color: var(--text-muted);"></span></p>
+                <div id="popup-socials-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+                     <strong style="font-size: 12px; color: #666; display: block; margin-bottom: 8px;">CONNECT:</strong>
+                     <div id="popup-socials" style="display: flex; gap: 15px; font-size: 20px;">
+                      </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <a id="msg-btn" href="#" class="btn" style="display: block; width: 100%; text-decoration: none; margin-bottom: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 600;">
+                Send Message
+            </a>
+            <button onclick="closeProfileDetail()" class="btn" style="width: 100%; background: #eee; padding: 10px; border-radius: 8px;">Close</button>
+        </div>
+    </div>
+</div>
+    <div id="help-bubble" onclick="toggleHelpBox()" style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 3000; transition: transform 0.3s;">
+    💬
+</div>
+
+<div id="help-box" style="display: none; position: fixed; bottom: 100px; right: 30px; width: 320px; background: white; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid var(--border); z-index: 3000; overflow: hidden; animation: slideUp 0.3s ease;">
+    <div style="background: var(--primary); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between;">
+        <span>Help Center & Reporting</span>
+        <span onclick="toggleHelpBox()" style="cursor: pointer;">&times;</span>
+    </div>
+    
+    <form action="/submit-report" method="POST" enctype="multipart/form-data" style="padding: 15px;">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Found a bug or want to report a user? Let the Admin know.</p>
+        
+        <textarea name="message" placeholder="Describe the issue..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; resize: none; font-size: 13px; margin-bottom: 10px;" rows="4" required></textarea>
+        
+        <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px;">Attach Screenshot (Optional):</label>
+        <input type="file" name="report_image" accept="image/*" style="font-size: 12px; margin-bottom: 15px; width: 100%;">
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Report</button>
+    </form>
+</div>
+
+<script>
+function toggleHelpBox() {
+    const box = document.getElementById('help-box');
+    const bubble = document.getElementById('help-bubble');
+    if (box.style.display === 'none') {
+        box.style.display = 'block';
+        bubble.style.transform = 'scale(0.9) rotate(90deg)';
+    } else {
+        box.style.display = 'none';
+        bubble.style.transform = 'scale(1) rotate(0deg)';
+    }
+}
+</script>
+</body>
+</html>

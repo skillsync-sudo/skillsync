@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+scikit-learn
+pandas
+requests
+google-api-python-client
+Werkzeug
+gunicorn
