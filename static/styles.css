@@ -1,0 +1,290 @@
+/* SkillSync - Complete Modern Design System
+    Palette: Professional Blue, Slate, and Accent Orange
+*/
+
+:root {
+    --primary-color: #0a66c2;
+    --primary-dark: #004182;
+    --primary-light: #e8f3ff;
+    --accent-orange: #f97316;
+    --background: #f8fafc;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --white: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* --- 1. BASE STYLES --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* --- 2. HEADER & NAVIGATION (Glassmorphism) --- */
+header.sticky-top {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color) !important;
+    height: auto !important; /* Fixed: Removed the 122px height for better layout */
+    padding: 0.5rem 0;
+    z-index: 1050;
+}
+
+.logo {
+    font-family: 'Agbalumo', system-ui;
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.logo::after {
+    content: '.';
+    color: var(--accent-orange);
+}
+
+.logo:hover {
+    transform: scale(1.02);
+}
+
+.nav-link {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted) !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+    background: var(--primary-light);
+}
+
+.nav-link i {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+    transform: translateY(-3px);
+}
+
+/* --- 3. HERO SECTION --- */
+.hero-section {
+    position: relative;
+    padding-top: 120px;
+    padding-bottom: 60px;
+    background: radial-gradient(circle at top right, #e0e7ff 0%, var(--background) 50%);
+}
+
+.hero-card {
+    background: var(--white);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-card:hover {
+    transform: translateY(-10px) rotateX(2deg);
+}
+
+.hero-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Decorative Background Blobs */
+.hero-bg-gradient, .hero-bg-gradient-2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.4;
+}
+
+.hero-bg-gradient {
+    background: var(--primary-light);
+    top: -100px;
+    right: -100px;
+}
+
+.hero-bg-gradient-2 {
+    background: #e0f2fe;
+    bottom: 10%;
+    left: -50px;
+}
+
+/* --- 4. BUTTONS --- */
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px 0 rgba(10, 102, 194, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(10, 102, 194, 0.2);
+}
+
+.btn-outline-secondary {
+    border: 2px solid #e2e8f0;
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--white);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* --- 5. JOB CHIPS & CATEGORIES --- */
+#jobCategories .btn {
+    border: 1.5px solid #e2e8f0;
+    background: var(--white);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    margin: 4px;
+}
+
+#jobCategories .btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* --- 6. FOOTER & SOCIALS --- */
+footer {
+    background-color: #1e293b !important; /* Professional Deep Slate */
+    color: #f1f5f9;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+footer .logo {
+    color: var(--primary-color);
+}
+
+footer .text-muted {
+    color: #94a3b8 !important;
+}
+
+.social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    /* This makes them visible but subtle on the dark background */
+    background: rgba(255, 255, 255, 0.15) !important; 
+    color: rgba(0, 0, 0, 0.9) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(10, 102, 194, 0.4);
+}
+
+/* Ensure icons inside are sized correctly */
+.social-btn i {
+    font-size: 1.2rem;
+}
+
+/* --- 7. ANIMATIONS --- */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.bounce {
+    animation: bounce 4s infinite ease-in-out;
+}
+
+.fade-up {
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.21, 0.6, 0.35, 1) forwards;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-icon {
+    transition: all 0.3s ease;
+}
+
+.hover-icon:hover {
+    color: var(--accent-orange) !important;
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* --- 8. MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+    header.sticky-top {
+        padding: 10px 0;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+    }
+
+    .hero-section {
+        padding-top: 100px;
+        text-align: center;
+    }
+
+    .navbar-collapse {
+        background: var(--white);
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+    }
+
+    .nav-link {
+        flex-direction: row;
+        gap: 15px;
+        padding: 1rem !important;
+    }
+
+    .display-4 {
+        font-size: 2.2rem;
+    }
+}

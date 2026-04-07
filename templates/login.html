@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+  <title>Skill Sync login</title>
+<style>
+/* SkillSync Pro - Professional Login Design System */
+:root {
+    --primary: #0a66c2; /* LinkedIn Professional Blue */
+    --primary-hover: #004182; 
+    --primary-light: #e8f3ff;
+    --accent-orange: #f97316;
+    --bg-body: #f3f6f8;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --text-main: #1e293b; 
+    --text-muted: #64748b;
+    --border: rgba(0, 0, 0, 0.08); 
+    --radius-card: 24px;
+    --radius-pill: 50px;
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Base Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+    font-family: var(--font); 
+    background: radial-gradient(circle at top right, #e0e7ff 0%, var(--bg-body) 60%);
+    color: var(--text-main); 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Header & Logo */
+.header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.logo { 
+    font-family: 'Agbalumo', system-ui; 
+    font-weight: 800; 
+    font-size: 2.8rem; 
+    color: var(--primary); 
+    text-decoration: none;
+}
+.logo::after { content: '.'; color: var(--accent-orange); }
+
+/* Main Card - Glassmorphism */
+main { 
+    width: 100%;
+    max-width: 400px; 
+    background: var(--bg-card); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-card); 
+    border: 1px solid rgba(255, 255, 255, 1); 
+    box-shadow: var(--shadow-lg); 
+    padding: 40px 32px; 
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text-main);
+}
+
+/* Social Buttons */
+.social-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid #d1d5db;
+    background: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+}
+
+.social-btn:hover {
+    background: #f8fafc;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.icon { width: 20px; height: 20px; }
+
+/* Agreement Text */
+.agreement {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.agreement a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.agreement a:hover { text-decoration: underline; }
+
+/* Separator */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+}
+
+.separator span { padding: 0 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Form Elements */
+form { display: flex; flex-direction: column; gap: 16px; }
+
+input[type="text"], 
+input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.1);
+}
+
+/* Password Wrapper */
+.password-wrapper { position: relative; }
+
+.show-password-btn {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* Keep logged in & Forgot password */
+.forgot-password { text-align: right; margin-top: -8px; }
+.forgot-password a { font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 600; }
+
+.keep-logged-in {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+/* Sign In Button */
+.signin-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-pill);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.signin-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(10, 102, 194, 0.3);
+}
+
+/* Bottom Join */
+.bottom-join {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.bottom-join a { color: var(--primary); font-weight: 700; text-decoration: none; }
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 20px;
+    font-size: 12px;
+}
+
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { color: var(--primary); text-decoration: underline; }
+
+footer select {
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 2px 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+    background: transparent;
+}
+
+/* Utility: Visually Hidden */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px; 
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Skillsync</div>
+</header>
+</header>
+
+<main role="main" aria-labelledby="signin-title">
+  <h1 id="signin-title">Sign in</h1>
+
+  <button class="social-btn google" type="button" aria-label="Continue with Google">
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3" aria-hidden="true" focusable="false">
+      <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.3-4.4-50.7H272v95.9h146.9c-6.4 34.5-25.7 63.8-54.9 83.6v69h88.7c52.1-47.9 82-118.7 82-197.8z"/>
+      <path fill="#34A853" d="M272 544.3c73.6 0 135.4-24.3 180.6-65.8l-88.7-69c-24.6 16.4-56.1 26-91.9 26-70.7 0-130.5-47.7-152-111.2h-89.3v69.9c45.6 90.3 139.9 150.1 241.3 150.1z"/>
+      <path fill="#FBBC04" d="M120 322.3A161.1 161.1 0 01113.6 272c0-16.2 2.9-31.8 7.9-46.3v-69.9h-89.3A267.1 267.1 0 0029.4 272a268.4 268.4 0 0090.6 150.4l79.5-62.4a160.1 160.1 0 01-89.5-38.4z"/>
+      <path fill="#EA4335" d="M272 107.7c38.8 0 73.7 13.3 101.3 39.5l76-75.9C392 24.6 329.3 0 272 0 169 0 74.7 59.7 29.4 150.1l89.4 69.9c21.5-63.5 81.3-111.2 153.2-111.2z"/>
+    </svg>
+    Continue with Google
+  </button>
+  <p class="agreement" aria-live="polite">
+    By clicking Continue, you agree to SKILLsync's
+    <a href="{{ url_for('user_agreement')}}">User Agreement</a>
+  <a href="{{ url_for('privacy_policy') }}" >Privacy Policy</a>
+  <a href="{{ url_for('community') }}" tabindex="0">Community Guidelines</a>
+  <a href="{{ url_for('cookie_policy') }}">Cookie Policy</a>
+  <a href="{{ url_for('copyright') }}">Copyright Policy</a>
+  </p>
+
+  <div class="separator" aria-hidden="true">
+    <hr /><span>or</span><hr />
+  </div>
+
+
+
+<form method="POST" action="{{ url_for('login') }}">
+
+    <label for="email-phone" class="visually-hidden">Email or phone</label>
+    <input id="email-phone" name="email" type="text" placeholder="Email or phone" autocomplete="username" required />
+
+    <div class="password-wrapper">
+      <label for="password" class="visually-hidden">Password</label>
+      <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="button" class="show-password-btn" aria-label="Show password">Show</button>
+    </div>
+
+    <div class="forgot-password">
+      <a href="{{ url_for('forget') }}" tabindex="0">Forgot password?</a>
+    </div>
+
+    <label class="keep-logged-in" for="keep-logged-in">
+      <input id="keep-logged-in" type="checkbox" checked />
+      Keep me logged in
+    </label>
+
+    <button type="submit" class="signin-btn">Sign in</button>
+  </form>
+
+  <p class="bottom-join" aria-live="polite">
+    New to SKILLsync? <a href="{{ url_for('register') }}">Join now</a>
+  </p>
+</main>
+
+<footer role="contentinfo" aria-label="Footer">
+  <a href="{{ url_for('user_agreement')}}">User Agreement</a>
+  <a href="{{ url_for('privacy_policy') }}" >Privacy Policy</a>
+  <a href="{{ url_for('community') }}" tabindex="0">Community Guidelines</a>
+  <a href="{{ url_for('cookie_policy') }}">Cookie Policy</a>
+  <a href="{{ url_for('copyright') }}">Copyright Policy</a>
+  <a href="{{ url_for('feedback') }}">Send Feedback</a>
+  <div>
+    <label for="language-select" class="visually-hidden">Language</label>
+    <select id="language-select" aria-label="Language selection">
+      <option value="en" selected>English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <!-- Add more languages -->
+    </select>
+  </div>
+  <div style="width: 100%; text-align:center; margin-top: 10px; font-size: 12px; color:#666;">
+    <span>Skillsync</span> © 2025
+  </div>
+</footer>
+
+<script>
+  // Password show/hide functionality
+  const showPassBtn = document.querySelector('.show-password-btn');
+  const passwordInput = document.getElementById('password');
+
+  showPassBtn.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      showPassBtn.textContent = 'Hide';
+    } else {
+      passwordInput.type = 'password';
+      showPassBtn.textContent = 'Show';
+    }
+  });
+</script>
+
+<!-- Visually hidden helper class for screen reader only text -->
+<style>
+  .visually-hidden {
+    position: absolute !important;
+    height: 1px; 
+    width: 1px; 
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+  }
+</style>
+
+</body>
+</html>

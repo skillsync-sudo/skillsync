@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset Password | Skillsync</title>
+  <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Inter:wght@400;600;700&display=swap');
+
+    :root {
+        --primary-orange: #f97316;
+        --primary-blue: #0a66c2;
+        --primary-hover: #004182;
+        --bg-gradient: linear-gradient(135deg, #d1dbe4 0%, #f8fafc 100%);
+        --white: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --radius: 20px;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-gradient);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Enhanced Card - Matches Login/Register style */
+    main {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: var(--radius);
+        padding: 50px 40px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        text-align: center;
+    }
+
+    /* Branded Logo matching your Index page */
+     .logo {
+    font-family: 'Agbalumo', system-ui;
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.logo::after {
+    content: '.';
+    color: var(--primary-orange);
+}
+
+    h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .instructions {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        text-align: left;
+    }
+
+    label {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--primary-blue);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: -10px;
+    }
+
+    input[type="email"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 15px;
+        font-size: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'Inter', sans-serif;
+    }
+
+    input[type="email"]:focus {
+        border-color: var(--primary-orange);
+        background: var(--white);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+        transform: translateY(-1px);
+    }
+
+    /* Primary Button matching Index buttons */
+    button {
+        background-color: var(--primary-blue);
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+    }
+
+    button:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(10, 102, 194, 0.3);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .back-to-signin {
+        margin-top: 30px;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+    }
+
+    .back-to-signin a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.2s;
+    }
+
+    .back-to-signin a:hover {
+        color: var(--primary-orange);
+    }
+
+    /* Unified Alert Styles */
+    .alert {
+        padding: 12px 16px;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        color: #1e40af;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .success-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        padding: 20px;
+        border-radius: 12px;
+        color: #166534;
+        display: none; /* Controlled by JS */
+    }
+
+    @media (max-width: 480px) {
+        main {
+            padding: 40px 25px;
+            border-radius: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<main>
+    <div class="logo">Skillsync</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div id="form-container">
+        <h1>Reset your password</h1>
+        <p class="instructions">Enter your email and we'll send you a secure link to get back into your account.</p>
+
+        <form id="reset-form" novalidate>
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="name@example.com" required />
+          <button type="submit">Send Reset Link</button>
+        </form>
+    </div>
+
+    <div id="success-box" class="success-box" role="alert">
+      <h2>✓ Check your inbox</h2>
+      <p style="font-size: 0.9rem; color: #166534; margin-bottom: 0;">
+        If an account exists for that email, we've sent instructions to reset your password.
+      </p>
+    </div>
+
+    <div class="back-to-signin">
+      <a href="signin.html">← Back to Sign In</a>
+    </div>
+</main>
+
+<script>
+  const form = document.getElementById('reset-form');
+  const formContainer = document.getElementById('form-container');
+  const successBox = document.getElementById('success-box');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Simulate API Call
+    formContainer.style.display = 'none';
+    successBox.style.display = 'block';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skillsync | Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+        --primary-blue: #0a66c2;
+        --primary-orange: #f97316; /* Actual Branded Orange */
+        --primary-hover: #004182;
+        --bg-gradient: linear-gradient(135deg, #d1dbe4 0%, #f8fafc 100%);
+        --white: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --radius: 16px;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Main Container - Matches Register Card */
+    main {
+        max-width: 480px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        padding: 45px;
+        border-radius: var(--radius);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    /* Branded Logo */
+    .logo {
+    font-family: 'Agbalumo', system-ui;
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.logo::after {
+    content: '.';
+    color: var(--primary-orange);
+}
+
+    h1 {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 35px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+        color: var(--primary-blue);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Form Fields */
+    input[type="email"], 
+    textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 15px;
+        font-size: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        font-family: 'Inter', sans-serif;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input:focus, 
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary-orange);
+        background: var(--white);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Branded Button */
+    button {
+        width: 100%;
+        background: var(--primary-blue);
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+    }
+
+    button:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(10, 102, 194, 0.3);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .privacy-note {
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 20px;
+        line-height: 1.5;
+    }
+
+    /* Success State Overrides */
+    .success-message {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+        color: #10b981;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 4px 6px rgba(16, 185, 129, 0.2));
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+        main {
+            padding: 30px 20px;
+            border-radius: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<main>
+    <div class="logo">Skill<span>sync</span></div>
+    <h1>Share your thoughts</h1>
+
+    <form id="feedback-form" novalidate>
+      <label for="email">Email Address (Optional)</label>
+      <input id="email" type="email" placeholder="name@example.com" />
+
+      <label for="message">How can we improve?</label>
+      <textarea id="message" placeholder="Tell us about your experience..." required></textarea>
+
+      <button type="submit">Submit Feedback</button>
+      
+      <p class="privacy-note">
+        In compliance with Nepal's Individual Privacy Act 2075, your data is secure and will only be used to improve Skillsync services.
+      </p>
+    </form>
+
+    <div id="success-message" class="success-message" style="display:none;">
+      <div class="success-icon">✓</div>
+      <h2 style="color: var(--primary-blue); margin-bottom: 10px;">Dhanyabaad!</h2>
+      <p style="color: #64748b;">Your feedback helps us build a better platform for Nepal.</p>
+    </div>
+</main>
+
+<script>
+  const form = document.getElementById('feedback-form');
+  const successMessage = document.getElementById('success-message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const message = document.getElementById('message').value.trim();
+
+    if (!message) {
+      alert('Please enter your feedback.');
+      return;
+    }
+
+    // Simulation of success
+    form.style.display = 'none';
+    successMessage.style.display = 'block';
+    
+    // You can use fetch() here to send data to your backend
+    console.log("Feedback Submitted:", message);
+  });
+</script>
+
+</body>
+</html>

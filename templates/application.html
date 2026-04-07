@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <title>Applications | SkillSync</title>
+    <style>
+        :root {
+            --primary: #0a66c2;
+            --bg-body: #f4f7f9;
+            --border: #e2e8f0;
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        body { background: var(--bg-body); font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; }
+        .logo { font-family: 'Agbalumo', system-ui; font-size: 28px; color: var(--primary); text-decoration: none; cursor: pointer; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .app-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .score-circle { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: var(--shadow-md); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" onclick="window.location.href='{{ url_for('recruiter_dashboard') }}'">SkillSync</div>
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <a href="{{ url_for('recruiter_dashboard') }}" title="Dashboard" style="text-decoration: none; font-size: 22px;">🧑🏻</a>
+        
+        <div style="position: relative; cursor: pointer; font-size: 20px;">
+            🔔
+            {% if unread_count and unread_count > 0 %}
+            <span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; border: 2px solid white;">
+                {{ unread_count }}
+            </span>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border); padding-left: 15px;">
+            <img src="{% if user.profile_pic %}{{ url_for('static', filename='uploads/' + user.profile_pic) }}{% else %}https://ui-avatars.com/api/?name={{ user_name }}{% endif %}" 
+                 style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+            <span style="font-weight: 600; font-size: 14px;">{{ user_name }}</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <h2 style="color: #1e293b; margin-bottom: 25px;">Candidate Rankings</h2>
+
+    {% for item in applications %}
+    <div class="app-card">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <img src="{% if item.student.profile_pic %}{{ url_for('static', filename='uploads/' + item.student.profile_pic) }}{% else %}https://ui-avatars.com/api/?name={{ item.student.name }}{% endif %}" 
+                 style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+            
+            <div>
+                <h3 style="margin: 0; font-size: 18px;">{{ item.student.name }}</h3>
+                <p style="margin: 5px 0; font-size: 13px; color: #64748b;">Post: {{ item.post_content[:45] }}...</p>
+                <div style="display: flex; gap: 6px; margin-top: 8px;">
+                    {% for skill in (item.student.skills or "").split(',')[:3] %}
+                        <span style="background: #eef6ff; color: var(--primary); font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600;">
+                            {{ skill.strip() }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <div class="score-circle" style="background: {% if item.score >= 80 %}#10b981{% elif item.score >= 50 %}#f59e0b{% else %}#ef4444{% endif %};">
+                {{ item.score }}%
+            </div>
+            <span style="font-size: 10px; font-weight: bold; color: #94a3b8; display: block; margin-top: 6px;">AI MATCH</span>
+        </div>
+    </div>
+    {% else %}
+    <div style="background: white; padding: 60px; text-align: center; border-radius: 12px; border: 2px dashed #cbd5e1;">
+        <p style="color: #64748b;">No applications found.</p>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

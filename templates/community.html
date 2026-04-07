@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillsync | Community Guidelines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+   <style>
+    :root {
+        /* Matching your main branding colors */
+        --primary: #0a66c2;
+        --secondary: #004182;
+        --accent-orange: #f97316;
+        --success: #059669;
+        --warning: #dc2626;
+        --bg-color: #f1f5f9; /* Slightly darker to make the white container 'pop' */
+        --text-main: #1e293b;
+        --text-muted: #475569;
+        --white: #ffffff;
+        --border-radius: 16px; /* Matching your login card radius */
+        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.7;
+        margin: 0;
+        padding: 60px 20px;
+    }
+
+    /* The Main Card - Matches Login/Register Container */
+    .container {
+        max-width: 850px;
+        margin: 0 auto;
+        background: var(--white);
+        padding: 50px 60px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    header {
+        text-align: center;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 30px;
+        margin-bottom: 40px;
+    }
+
+       .logo {
+    font-family: 'Agbalumo', system-ui;
+    color: var(--primary);
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.logo::after {
+    content: '.';
+    color: var(--accent-orange);
+}
+
+    h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text-main);
+        margin: 0;
+    }
+
+    /* Guideline Intro - Matching the "Alert" style of login errors/info */
+    .guideline-intro {
+        background: #eff6ff;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 5px solid var(--primary);
+        color: #1e40af;
+        font-weight: 500;
+        margin-bottom: 35px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        color: var(--secondary);
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+    }
+
+    h2::before {
+        content: "✓";
+        margin-right: 15px;
+        width: 28px;
+        height: 28px;
+        background: #dcfce7;
+        color: var(--success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 0.9rem;
+    }
+
+    p, li {
+        font-size: 1.05rem;
+        color: var(--text-muted);
+    }
+
+    ul { padding-left: 25px; margin-top: 15px; }
+
+    li { margin-bottom: 12px; }
+
+    /* Report Box - Stronger visual for warnings */
+    .report-box {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        padding: 25px;
+        border-radius: 12px;
+        margin-top: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .report-box::after {
+        content: "!";
+        position: absolute;
+        right: -10px;
+        bottom: -20px;
+        font-size: 100px;
+        color: rgba(220, 38, 38, 0.05);
+        font-weight: 900;
+    }
+
+    .report-box h3 {
+        color: var(--warning);
+        margin-top: 0;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+    }
+
+    a:hover {
+        border-bottom: 2px solid var(--primary);
+    }
+
+    /* Consistent Footer */
+    .footer {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 0.9rem;
+        color: #94a3b8;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 30px;
+    }
+
+    .footer span {
+        font-family: 'Agbalumo', system-ui;
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 600px) {
+        .container { padding: 30px 20px; }
+        .logo { font-size: 2.2rem; }
+        h1 { font-size: 1.8rem; }
+        body { padding: 20px 10px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">Skillsync</div>
+        <h1>Community Guidelines</h1>
+        <p style="color: #64748b;">Building a professional Nepal, together.</p>
+    </header>
+
+    <div class="guideline-intro">
+        Our mission is to foster a safe, productive, and professional environment for skill-sharing and career growth in Nepal.
+    </div>
+
+    <h2>1. Professional Respect</h2>
+    <p>Treat every community member with dignity. We have zero tolerance for:</p>
+    <ul>
+        <li>Harassment, bullying, or hate speech.</li>
+        <li>Discrimination based on caste, religion, gender, or geography.</li>
+        <li>Defamatory comments that violate the <em>National Penal (Code) Act, 2074</em>.</li>
+    </ul>
+
+    <h2>2. Authentic & Truthful Participation</h2>
+    <ul>
+        <li><strong>Real Identity:</strong> Use your real name and accurate professional details.</li>
+        <li><strong>No Misinformation:</strong> Do not post fake job listings or misleading course reviews.</li>
+        <li><strong>Spam:</strong> Avoid repetitive posting or unauthorized commercial advertisements.</li>
+    </ul>
+
+    <h2>3. Privacy & Safety</h2>
+    <p>Respect the "Right to Privacy." Never share another user’s phone number, address, or private documents without explicit permission.</p>
+
+    <h2>4. Professional Purpose</h2>
+    <p>Skillsync is a platform for internships, jobs, and networking. Please keep discussions focused on professional development. Non-professional content (political campaigning, adult content, or personal grievances) should be avoided.</p>
+
+    <h2>5. Intellectual Integrity</h2>
+    <p>Only share resumes, portfolios, and articles that you own. Plagiarism or claiming someone else’s work as your own will lead to immediate account review.</p>
+
+    <div class="report-box">
+        <h3>Reporting & Enforcement</h3>
+        <p>If you see something that violates these rules, please report it immediately:</p>
+        <ul>
+            <li><strong>Email:</strong> <a href="mailto:skillsync@gmail.com">skillsync@gmail.com</a></li>
+            <li><strong>Action:</strong> Consequences range from a formal warning to permanent IP bans and, if necessary, reporting to the <em>Nepal Police Cyber Bureau</em>.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        © 2025 <span>Skillsync</span>Nepal. All Rights Reserved.<br>
+        <em>Thank you for keeping Skillsync professional and safe.</em>
+    </div>
+</div>
+
+</body>
+</html>
