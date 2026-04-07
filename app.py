@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import os
+import cloudinary
+import cloudinary.uploader
 import requests
 from collections import Counter
 #from flask import current_app
