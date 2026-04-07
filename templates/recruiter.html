@@ -247,7 +247,7 @@
     <div class="profile-container" style="position: relative;">
         <div id="profileTrigger" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
            {% if user.profile_pic %}
-    <img src="{{ user.profile_pic }}" alt="Logo" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+    <img src="{{ user.profile_pic }}" alt="Logo">
 {% else %}
     <div class="default-avatar">{{ user.name[0] }}</div>
 {% endif %}
